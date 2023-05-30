@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('./db/connection')
 
-// Works with inquirer to add a selection-menu in the terminal to decide which function to execute based on user input. //
 function displayMenu() {
   inquirer
     .prompt([
@@ -61,5 +60,17 @@ function viewAllDepartments() {
   });
 }
 
-// Calls this function to display the main menu when the application starts. // 
+function viewAllRoles() {
+  const query = 
+  `SELECT roles.role_id, roles.title, departments.department_name, roles.salary
+    FROM roles
+    INNER JOIN departments ON roles.department_id = departments.department_id`;
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    displayMenu();
+  });
+}
+
+// Displays the main menu when the application starts. // 
 displayMenu();
