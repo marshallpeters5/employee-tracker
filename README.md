@@ -40,7 +40,7 @@ To run the Employee Tracker application, use the following command in the projec
 
     npm start
 
-    Then follow the prompts to perform various actions such as viewing departments, roles, and employees, adding new departments, roles, and employees, and updating employee roles.
+Then follow the prompts to perform various actions such as viewing departments, roles, and employees, adding new departments, roles, and employees, and updating employee roles.
 
 ## Contributing
 
