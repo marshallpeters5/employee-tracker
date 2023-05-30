@@ -52,5 +52,14 @@ function displayMenu() {
     });
 }
 
+function viewAllDepartments() {
+  const query = 'SELECT * FROM departments';
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    displayMenu();
+  });
+}
+
 // Calls this function to display the main menu when the application starts. // 
 displayMenu();
