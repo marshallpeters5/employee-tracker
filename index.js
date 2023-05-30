@@ -225,34 +225,42 @@ function addEmployee() {
 }
 
 function updateEmployeeRole() {
-  const employeeQuery = 'SELECT employee_id, first_name, last_name FROM employees';
+  const employeeQuery =
+    "SELECT employee_id, first_name, last_name FROM employees";
   connection.query(employeeQuery, (err, employees) => {
     if (err) throw err;
-    const roleQuery = 'SELECT role_id, title FROM roles';
+    const roleQuery = "SELECT role_id, title FROM roles";
     connection.query(roleQuery, (err, roles) => {
       if (err) throw err;
       inquirer
         .prompt([
           {
-            type: 'list',
-            name: 'employee',
-            message: 'Select the employee to update:',
-            choices: employees.map((employee) => ({ name: `${employee.first_name} ${employee.last_name}`, value: employee.employee_id })),
+            type: "list",
+            name: "employee",
+            message: "Select the employee to update:",
+            choices: employees.map((employee) => ({
+              name: `${employee.first_name} ${employee.last_name}`,
+              value: employee.employee_id,
+            })),
           },
           {
-            type: 'list',
-            name: 'role',
-            message: 'Select the employee\'s new role:',
-            choices: roles.map((role) => ({ name: role.title, value: role.role_id })),
+            type: "list",
+            name: "role",
+            message: "Select the employee's new role:",
+            choices: roles.map((role) => ({
+              name: role.title,
+              value: role.role_id,
+            })),
           },
         ])
         .then((answers) => {
           const employeeId = answers.employee;
           const roleId = answers.role;
-          const query = 'UPDATE employees SET role_id = ? WHERE employee_id = ?';
+          const query =
+            "UPDATE employees SET role_id = ? WHERE employee_id = ?";
           connection.query(query, [roleId, employeeId], (err, res) => {
             if (err) throw err;
-            console.log('The employee\'s role has been updated successfully.');
+            console.log("The employee's role has been updated successfully.");
             displayMenu();
           });
         });
