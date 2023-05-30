@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const connection = require('./db/connection')
 
 // Works with inquirer to add a selection-menu in the terminal to decide which function to execute based on user input. //
 function displayMenu() {
