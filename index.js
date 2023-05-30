@@ -89,5 +89,25 @@ function viewAllEmployees() {
   });
 }
 
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'departmentName',
+        message: 'Enter the name of the department:',
+      },
+    ])
+    .then((answers) => {
+      const departmentName = answers.departmentName;
+      const query = 'INSERT INTO departments (department_name) VALUES (?)';
+      connection.query(query, [departmentName], (err, res) => {
+        if (err) throw err;
+        console.log(`The department '${departmentName}' has been added successfully.`);
+        displayMenu();
+      });
+    });
+}
+
 // Displays the main menu when the application starts. // 
 displayMenu();
