@@ -72,14 +72,14 @@ function viewAllRoles() {
 }
 
 function viewAllEmployees() {
-  const query = `SELECT employees.employee_id, employees.first_name, employees.last_name,
+  const query = `SELECT employee.employee_id, employee.first_name, employee.last_name,
     roles.title AS job_title, departments.department_name, roles.salary,
     CONCAT(managers.first_name, ' ', managers.last_name) AS manager
-    FROM employees
-    INNER JOIN roles ON employees.role_id = roles.role_id
+    FROM employee
+    INNER JOIN roles ON employee.role_id = roles.role_id
     INNER JOIN departments ON roles.department_id = departments.department_id
-    LEFT JOIN employees AS managers ON employees.manager_id = managers.employee_id
-  `;
+    LEFT JOIN employee AS managers ON employee.manager_id = managers.employee_id
+`;
   connection.query(query, (err, res) => {
     if (err) throw err;
     console.table(res);
@@ -164,7 +164,7 @@ function addEmployee() {
   connection.query(roleQuery, (err, roles) => {
     if (err) throw err;
     const employeeQuery =
-      "SELECT employee_id, first_name, last_name FROM employees";
+      "SELECT employee_id, first_name, last_name FROM employee";
     connection.query(employeeQuery, (err, employees) => {
       if (err) throw err;
       inquirer
@@ -207,7 +207,7 @@ function addEmployee() {
           const roleId = answers.role;
           const managerId = answers.manager;
           const query =
-            "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+            "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
           connection.query(
             query,
             [firstName, lastName, roleId, managerId],
@@ -226,8 +226,8 @@ function addEmployee() {
 
 function updateEmployeeRole() {
   const employeeQuery =
-    "SELECT employee_id, first_name, last_name FROM employees";
-  connection.query(employeeQuery, (err, employees) => {
+    "SELECT employee_id, first_name, last_name FROM employee";
+  connection.query(employeeQuery, (err, employee) => {
     if (err) throw err;
     const roleQuery = "SELECT role_id, title FROM roles";
     connection.query(roleQuery, (err, roles) => {
@@ -238,7 +238,7 @@ function updateEmployeeRole() {
             type: "list",
             name: "employee",
             message: "Select the employee to update:",
-            choices: employees.map((employee) => ({
+            choices: employee.map((employee) => ({
               name: `${employee.first_name} ${employee.last_name}`,
               value: employee.employee_id,
             })),
@@ -257,7 +257,7 @@ function updateEmployeeRole() {
           const employeeId = answers.employee;
           const roleId = answers.role;
           const query =
-            "UPDATE employees SET role_id = ? WHERE employee_id = ?";
+            "UPDATE employee SET role_id = ? WHERE employee_id = ?";
           connection.query(query, [roleId, employeeId], (err, res) => {
             if (err) throw err;
             console.log("The employee's role has been updated successfully.");
